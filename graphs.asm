@@ -19,7 +19,7 @@ bar:
   ld a, (hl)
   ld c, '#'       ; C = '#'...
   cp b
-  jp p, not_less
+  jr nc, not_less
   ld c, ' '       ; But if bar value < B, C = space...
 not_less:
   jp nz, not_eq
