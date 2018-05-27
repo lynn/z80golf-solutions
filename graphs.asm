@@ -37,6 +37,5 @@ not_eq:
 endline:
   ld a, '\n'    ; Print a newline and go to the next line.
   call $8000
-  dec b
-  jr nz, line
+  djnz line
   halt        ; Done.

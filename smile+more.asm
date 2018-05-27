@@ -11,29 +11,28 @@ start:
   ; Point HL to the correct smile character:
   ld l,a
 
-  ; Also set up B, which we count down each line.
-  ld b,a
+  ; Also set up D, which we count down each line.
+  ld d,a
 
 line:
   ; Increment E by 10
-  ld a, e
-  add a, 10
+  ld a, e 
+  add a, 10 
   ld e, a
 
   ld a, ':'
   rst $38  ; putchar
 
-  ; Print E smiles, using D as a counter.
-  ld d, e
+  ; Print E smiles, using B (and DJNZ) as a counter.
+  ld b, e
 smiles:
   ld a, (hl)
   rst $38  ; putchar
-  dec d
-  jr nz, smiles
+  djnz smiles
 
-  ; Print a newline, decrement B and loop if B is non-negative.
+  ; Print a newline, decrement D and loop if D is non-negative.
   ld a, '\n'
   rst $38  ; putchar
-  dec b
+  dec d
   jp p, line
   halt

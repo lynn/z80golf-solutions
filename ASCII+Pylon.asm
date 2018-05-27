@@ -1,10 +1,10 @@
-  ld l,48   ; line counter
-  ld b,'!'  ; center char
+  ld b,48   ; line counter
+  ld c,'!'  ; center char
 
 line:
   ; Print L-1 spaces.
   ld a,' '
-  ld e,l
+  ld e,b
 spaces:
   dec e
   jr z, pylon
@@ -14,16 +14,16 @@ spaces:
   ; Print characters from D=80-L to B and back.
 pylon:
   ld a,80
-  sub l
+  sub b
   ld d,a
 left:
   rst $38
   inc a
-  cp b
+  cp c
   jr nz, left
 
-  inc b
-  inc b
+  inc c
+  inc c
   dec a
 
 right:
@@ -38,7 +38,6 @@ endline:
   ld a,'\n'
   rst $38
 
-  dec l
-  jr nz, line
+  djnz line
   halt
 
