@@ -13,8 +13,8 @@ next:
   ;
   ; ...All this saves just one byte, sadly.
 
-  db $36      ; "36cd 227fc9" means:
-putchar:      ;   ld (hl), $cd        ; "cd227f c9" means:
+  db $36      ; "36cd 227fc9" is harmless:
+putchar:      ;   ld (hl), $cd        ; "cd227f c9" calls putchar:
   call $7f22  ;   ld ($c97f), hl      ;   call $7f22
   ret                                 ;   ret
 
