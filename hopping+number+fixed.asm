@@ -1,3 +1,12 @@
+; a,b,c,d,e; main() {
+;   for (c=1;c<=9;c++) for (d=1;d<=9;d++) for (e=1;e<=9;e++)
+;   if (d+c*e <= 9) {
+;     for (a=d+'0', b=c+1+1; --b; a+=e) putchar(a);
+;     putchar('\n');
+;   }
+; }
+
+
 nextc:        ; For C=1 to 9:
   inc c
   ld d, l
