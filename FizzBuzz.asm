@@ -10,6 +10,8 @@ next:
   ; 36 opcode [LD (HL),&00] at $0007 that trips up the 4 following bytes
   ; and turns them into effective NOPs. (CALL $7f22 is okay because
   ; we will simply nop-slide into $8000 from there.)
+  ;
+  ; ...All this saves just one byte, sadly.
 
   db $36      ; "36cd 227fc9" means:
 putchar:      ;   ld (hl), $cd        ; "cd227f c9" means:
@@ -22,17 +24,17 @@ whew:
   ld d, l        ; Set D = 0.
   inc e          ; Increment tens counter.
 no_tens:
-  ccf            ; Clear carry flag. We 
+  ccf            ; Clear carry flag. We set carry after Fizzing or Buzzing.
   djnz no_fizz   ; Decrement Fizz counter; if non-zero, don't Fizz.
 
   ld b, 3        ; Reset Fizz counter, print Fizz, set carry.
   ld a, 'F'
   rst putchar
   ld a, 'i'
-  rst $8
+  rst putchar
   ld a, 'z'
-  rst $8
-  rst $8
+  rst putchar
+  rst putchar
   scf
 
 no_fizz:
@@ -41,12 +43,12 @@ no_fizz:
 
   ld c, 5        ; Reset Buzz counter, print Buzz, set carry.
   ld a, 'B'
-  rst $8
+  rst putchar
   ld a, 'u'
-  rst $8
+  rst putchar
   ld a, 'z'
-  rst $8
-  rst $8
+  rst putchar
+  rst putchar
   scf
 
 no_buzz:
@@ -54,15 +56,16 @@ no_buzz:
   ld a, e         ; Check the tens digit...
   or a
   jr z, skip_zero ; If it is zero, skip printing it.
-  add '0'
-  rst $8
+  add '0'         ; Print the tens digit.
+  rst putchar
 skip_zero:
-  ld a, d         ; Print the ones digit.
-  add '0'
-  rst $8
+  ld a, d
+  add '0'         ; Print the ones digit.
+  rst putchar
+
 endline:
   ld a, h         ; Print a newline.
-  rst $8
+  rst putchar
   ld a, e
   cp h            ; Loop if the tens digit isn't 10.
   jr nz, next
