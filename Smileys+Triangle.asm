@@ -1,8 +1,8 @@
+  dec l
 next:
   ld a, ':'
   rst $38
   inc l
-  dec l
   jr z, endl
   ld a, '-'
   rst $38
@@ -16,10 +16,9 @@ smile:
 endl:
   ld b, l
   inc l
-  inc l
   ld a, '\n'
   rst $38
-  ld a, 68
+  ld a, 67
   cp l
   jr nz, next
   halt
